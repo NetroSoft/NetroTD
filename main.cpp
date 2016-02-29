@@ -1,9 +1,9 @@
-#include <SFML/Window.hpp>
-#include <GL/glew.h>
-#include <iostream>
 
 
-void loadShader(GLuint &program)
+//#include <iostream>
+#include "gamecontext.h"
+
+/*void loadShader(GLuint &program)
 {
 	GLint compile_ok = GL_FALSE, link_ok = GL_FALSE;
 
@@ -45,48 +45,49 @@ void loadShader(GLuint &program)
 		throw std::runtime_error("Error in glLinkProgram");
 
 	const char* attribute_name = "coord2d";
-}
+}*/
 
 int main()
 {
-	GLuint program;
-	GLuint vbo_triangle;	
-	GLint attribute_coord2d;
+     std::string name("NetroTD");
+     GameContext::Instance().start(name);
+     //GameContext::Instance().initializeComponents();
+     //GameContext::Instance().start(name)
 
-	sf::Window window(sf::VideoMode(800,600),"NetroTD",sf::Style::Default);
+	//sf::Window window(sf::VideoMode(800,600),"NetroTD",sf::Style::Default);
 
 	// Load glew
-	GLenum glew_status = glewInit();
-	if (glew_status != GLEW_OK) 
-		throw std::runtime_error("Glewinit");
+	//GLenum glew_status = glewInit();
+	//if (glew_status != GLEW_OK) 
+	//	throw std::runtime_error("Glewinit");
 
 	// Load Shader
-	loadShader(program);
+	//loadShader(program);
 
-	attribute_coord2d = glGetAttribLocation(program, "coord2d");
-	if (attribute_coord2d == -1) 
-		throw std::runtime_error("Could not bind attribute");
+	//attribute_coord2d = glGetAttribLocation(program, "coord2d");
+	//if (attribute_coord2d == -1) 
+	//	throw std::runtime_error("Could not bind attribute");
 
 	//Buffer
-	glGenBuffers(1, &vbo_triangle);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
-	static const GLfloat triangle_vertices[] = 
-	{
-		0.0,	0.8,
-		-0.8,	-0.8,
-		0.8, 	-0.8,
-	};
-	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(attribute_coord2d, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	//glGenBuffers(1, &vbo_triangle);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
+	//static const GLfloat triangle_vertices[] = 
+	//{
+	//	0.0,	0.8,
+//		-0.8,	-0.8,
+//		0.8, 	-0.8,
+//	};
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
+//	glVertexAttribPointer(attribute_coord2d, 2, GL_FLOAT, GL_FALSE, 0, 0);
+//
+//	// Some useful info
+///	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+   // std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+    //std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+    //std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
 
-	// Some useful info
-	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
-    std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-    std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
-    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
 
-
-	while (true)
+	/*while (true)
     {
         sf::Event event;
         while (window.pollEvent(event))
@@ -117,5 +118,7 @@ int main()
 
 		// Refresh window
         window.display();
-    }
+    }*/
+    //GameContext::Instance().start(name);
+    
 }
