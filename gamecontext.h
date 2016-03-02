@@ -5,6 +5,10 @@
 #include <GL/glew.h>
 #include <string>
 #include <glm/glm.hpp>
+#include <vector>
+
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
 class GameContext{
 //Singleton start
     public:
@@ -40,7 +44,7 @@ class GameContext{
         void centerMouse();
     
         void initializeComponents();
-        void loadShader();
+        void loadMap();
 
     private:
         sf::Window m_window;
@@ -52,6 +56,12 @@ class GameContext{
         GLuint program;
         GLuint vbo_triangle;	
         GLint attribute_coord2d;
+
+     std::vector<tinyobj::shape_t> shapes;
+     std::vector<tinyobj::material_t> materials;
+
+     std::vector<GLuint> vaoIds;
+     std::vector<GLuint> vboIds;
 };
 
 #endif // !GAMECONTEXT_H__
