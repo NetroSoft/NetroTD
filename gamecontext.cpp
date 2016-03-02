@@ -3,12 +3,6 @@
 #include <iostream>
 
 
-//int GameContext::getWindowWidth() const { return m_window.getSize().x; }
-//int GameContext::getWindowHeight() const { return m_window.getSize().y; }
-//float GameContext::getElapsedTime() const { return m_elapsed_time; }
-//sf::Vector2i GameContext::getMousePosition() const { return  sf::Mouse::getPosition(m_window); }
-
-
 GameContext::GameContext()
 :	m_config("NetroTD.cfg")
 {
@@ -16,9 +10,8 @@ GameContext::GameContext()
 }
 
 bool GameContext::start(std::string& title)
-{ 
-
-	m_window.create(
+{
+    m_window.create(
 			sf::VideoMode(
 				m_config.getInt("window_width"),
 				m_config.getInt("window_height")),
@@ -55,8 +48,6 @@ bool GameContext::start(std::string& title)
 				}
 			}
 
-		
-
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -81,7 +72,6 @@ bool GameContext::start(std::string& title)
         m_window.display();
         }
     }
-    
 
 	return 1;
 }
@@ -94,6 +84,7 @@ void GameContext::initializeComponents()
 	if (glew_status != GLEW_OK)
 		throw std::runtime_error("Glewinit");
 
+
     //Load les shaders
     program = Shader::Load("TransformVertexShader.vertexshader",
             "TextureFragmentShader.fragmentshader");
@@ -103,15 +94,12 @@ void GameContext::initializeComponents()
     
     // Dark blue background
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);    
-
-    
+	
     // Some useful info
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 	std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
-
-
 }
 
 void GameContext::loadMap()
@@ -226,10 +214,11 @@ int GameContext::getWindowHeight() const
 
 float GameContext::getElapsedTime() const
 {
-	return m_elapsed_time;
-}
+	return m_elapsed_time;}
 
 sf::Vector2i GameContext::getMousePosition() const
 {
-	return  sf::Mouse::getPosition(m_window);
+    return  sf::Mouse::getPosition(m_window);
 }
+
+

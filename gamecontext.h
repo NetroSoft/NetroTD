@@ -5,9 +5,9 @@
 #include <GL/glew.h>
 #include <string>
 #include <glm/glm.hpp>
+#include "config.h"
 
 #include <vector>
-#include "config.h"
 
 #include "tiny_obj_loader.h"
 
