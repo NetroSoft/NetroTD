@@ -3,55 +3,61 @@
 #include <iostream>
 
 
-int GameContext::getWindowWidth() const { return m_window.getSize().x; }
-int GameContext::getWindowHeight() const { return m_window.getSize().y; }
-float GameContext::getElapsedTime() const { return m_elapsed_time; }
-sf::Vector2i GameContext::getMousePosition() const { return  sf::Mouse::getPosition(m_window); }
+//int GameContext::getWindowWidth() const { return m_window.getSize().x; }
+//int GameContext::getWindowHeight() const { return m_window.getSize().y; }
+//float GameContext::getElapsedTime() const { return m_elapsed_time; }
+//sf::Vector2i GameContext::getMousePosition() const { return  sf::Mouse::getPosition(m_window); }
 
 
-void GameContext::centerMouse()
+GameContext::GameContext()
+:	m_config("NetroTD.cfg")
 {
-    sf::Mouse::setPosition(sf::Vector2i(this->getWindowWidth() / 2, this->getWindowHeight() / 2), m_window);
+	m_config.load();
 }
 
 bool GameContext::start(std::string& title)
 { 
-    m_window.create(sf::VideoMode(800,600),title,sf::Style::Default);
-  
-    initializeComponents();
-    
-    sf::Clock clock;
 
-    while(m_window.isOpen())
-    {
-        clock.restart();
-        sf::Event event;
+	m_window.create(
+			sf::VideoMode(
+				m_config.getInt("window_width"),
+				m_config.getInt("window_height")),
+			title, sf::Style::Default);
 
-        while(m_window.pollEvent(event))
-        {
-            switch(event.type)
-            {
-                case sf::Event::Closed:
-                {
-                    m_window.close();
-                    glDeleteProgram(program);
-                    return EXIT_SUCCESS;
-                }
-                case sf::Event::MouseMoved:
-                case sf::Event::KeyPressed:
-                {                    
-                    break;
-                }
-                case sf::Event::Resized:
-                {
-                    glViewport(0, 0, event.size.width, event.size.height);
-                    break;
-                }
-            }
-          
-        }
+	initializeComponents();
 
-        // Clear the screen
+	sf::Clock clock;
+
+	while(m_window.isOpen())
+	{
+		clock.restart();
+		sf::Event event;
+
+		while(m_window.pollEvent(event))
+		{
+			switch(event.type)
+			{
+				case sf::Event::Closed:
+				{
+					m_window.close();
+					glDeleteProgram(program);
+					return EXIT_SUCCESS;
+				}
+				case sf::Event::MouseMoved:
+				case sf::Event::KeyPressed:
+				{
+					break;
+				}
+				case sf::Event::Resized:
+				{
+					glViewport(0, 0, event.size.width, event.size.height);
+					break;
+				}
+			}
+
+		
+
+		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Use our shader
@@ -73,18 +79,20 @@ bool GameContext::start(std::string& title)
         
         // Refresh window
         m_window.display();
+        }
     }
+    
 
-    return 1;
+	return 1;
 }
 
 void GameContext::initializeComponents()
 {
-    // Load glew
-	GLenum glew_status = glewInit();
-	if (glew_status != GLEW_OK) 
-		throw std::runtime_error("Glewinit");
 
+	// Load glew
+	GLenum glew_status = glewInit();
+	if (glew_status != GLEW_OK)
+		throw std::runtime_error("Glewinit");
 
     //Load les shaders
     program = Shader::Load("TransformVertexShader.vertexshader",
@@ -99,11 +107,11 @@ void GameContext::initializeComponents()
     
     // Some useful info
 	std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
-    std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-    std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
-    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+	std::cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
 
- 
+
 }
 
 void GameContext::loadMap()
@@ -195,4 +203,33 @@ void GameContext::loadMap()
          glBindBuffer(GL_ARRAY_BUFFER,vboIds[i]);
          glBufferData(GL_ARRAY_BUFFER,shapes[i].mesh.num_vertices.size() * sizeof(shapes[i].mesh.num_vertices[0]),&shapes[i].mesh.num_vertices[0], GL_STATIC_DRAW);
      }
+}
+
+void GameContext::centerMouse()
+{
+	sf::Vector2i v(
+			this->getWindowWidth() / 2,
+			this->getWindowHeight() / 2);
+
+	sf::Mouse::setPosition(v, m_window);
+}
+
+int GameContext::getWindowWidth() const
+{
+	return m_window.getSize().x;
+}
+
+int GameContext::getWindowHeight() const
+{
+	return m_window.getSize().y;
+}
+
+float GameContext::getElapsedTime() const
+{
+	return m_elapsed_time;
+}
+
+sf::Vector2i GameContext::getMousePosition() const
+{
+	return  sf::Mouse::getPosition(m_window);
 }
